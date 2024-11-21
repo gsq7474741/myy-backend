@@ -3,7 +3,7 @@
 
 
 ### PR Types
-<!-- One of [ New features | Bug fixes | Improvements | Performance | BC Breaking |  Docs | Security | Deprecations | Others ] -->
+<!-- One of [ New features | Bug fixes | Improvements | Performance | Devs | BC Breaking | Docs | Security | Deprecations | Others ] -->
 
 
 ### Describe
