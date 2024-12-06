@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "type": "msedge",
+            "name": "localhost:3090/api/v1/users",
+            "request": "launch",
+            "url": "localhost:3090/api/v1/users"
+        }
+    ]
+}
