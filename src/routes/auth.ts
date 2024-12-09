@@ -1,9 +1,9 @@
 import {Hono} from 'hono';
 import {createModuleLogger} from '../utils/logger';
 import {AppDataSource} from "../db/orm/data-source";
-import {User} from "../db/orm/entity/User";
 import * as bcrypt from 'bcrypt';
 import {Response400} from "../utils/types";
+import {User} from "../entity/User";
 
 const authLogger = createModuleLogger('auth');
 
