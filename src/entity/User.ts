@@ -6,13 +6,13 @@
 //     create_time date        not null comment '创建时间'
 // ) comment '用户信息表';
 
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn} from "typeorm"
+import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from "typeorm"
 
 @Entity()
 export class User {
 
     @PrimaryGeneratedColumn('uuid', {comment: '用户id'})
-    id: number
+    id: string
 
     @Column('varchar', {length: 255, nullable: true})
     user_name: string

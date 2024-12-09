@@ -1,5 +1,5 @@
-import { Hono } from 'hono';
-import { UserController } from '../controllers/user_controller';
+import {Hono} from 'hono';
+import {UserController} from '../controllers/user_controller';
 
 const userController = new UserController();
 

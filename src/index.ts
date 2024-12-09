@@ -1,26 +1,20 @@
 import * as dotenv from "dotenv";
-
-dotenv.config({ path: '.env.dev' });
-
-
 import "reflect-metadata"
 import {serve} from '@hono/node-server'
 import {Hono} from 'hono'
 import {cors} from 'hono/cors'
 import {AppDataSource} from "./db/orm/data-source"
 import {createModuleLogger} from './utils/logger';
+// 挂载子应用
+import deviceRoutes from "./routes/device";
+import miscRoutes from "./routes/misc";
+import authRoutes from "./routes/auth";
+import userRoutes from "./routes/user_route";
 
-
-
-console.log("DB_HOST:", process.env.DB_HOST);
-console.log("DB_PORT:", process.env.DB_PORT);
-console.log("DB_USERNAME:", process.env.DB_USERNAME);
-console.log("DB_PASSWORD:", process.env.DB_PASSWORD);
-console.log("DB_DATABASE:", process.env.DB_DATABASE);
+dotenv.config({path: '.env.dev'});
 
 
 const indexLogger = createModuleLogger('index');
-
 
 
 dotenv.config({path: '.env.dev'})
@@ -48,12 +42,6 @@ app.get('/posts/:id', (c) => {
     c.header('X-Message', 'Hi!')
     return c.text(`You want see ${page} of ${id}`)
 })
-
-// 挂载子应用
-import deviceRoutes from "./routes/device";
-import miscRoutes from "./routes/misc";
-import authRoutes from "./routes/auth";
-import userRoutes from "./routes/user_route";
 
 apiV1.route('/device', deviceRoutes);
 apiV1.route('/', miscRoutes);

@@ -1,5 +1,3 @@
-
-
 // const ddl = `create table myy_dev.test
 //              (
 //                  id                 bigint auto_increment primary key,
@@ -19,7 +17,7 @@
 //              );`
 
 
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm"
+import {Column, Entity, PrimaryGeneratedColumn} from "typeorm"
 
 @Entity()
 export class Record {
