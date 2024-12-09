@@ -1,11 +1,11 @@
-import { DataSource } from 'typeorm';
+import {DataSource} from 'typeorm';
 import * as dotenv from 'dotenv';
-import { User } from '../../entity/User';
-import { Tree } from '../../entity/Tree';
+import {User} from '../../entity/User';
+import {Tree} from '../../entity/Tree';
 
 
 // 加载 .env 文件
-dotenv.config({ path: '.env.dev' });
+dotenv.config({path: '.env.dev'});
 
 
 // 显示打印环境变量
@@ -19,7 +19,7 @@ console.log('DB_DATABASE:', process.env.DB_DATABASE);
 export const AppDataSource = new DataSource({
     type: "mysql",
     host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT, 10),
+    port: parseInt(process.env.DB_PORT!, 10),
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,

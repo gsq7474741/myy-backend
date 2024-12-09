@@ -19,7 +19,7 @@
 // comment '设备';
 //
 
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import {Column, Entity, PrimaryGeneratedColumn} from "typeorm"
 
 @Entity()
 export class Device {
@@ -27,13 +27,11 @@ export class Device {
     @PrimaryGeneratedColumn('increment')
     id: number
 
-    @Column('varchar', { length: 255 })
+    @Column('varchar', {length: 255})
     device_name: string
 
-    @Column('varchar', { length: 255 })
+    @Column('varchar', {length: 255})
     product_key: string
-
-
 
 
 }

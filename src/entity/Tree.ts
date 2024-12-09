@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn} from "typeorm"
+import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm"
 
 
 @Entity()
@@ -7,8 +7,8 @@ export class Tree {
     @PrimaryGeneratedColumn("increment")
     id: number
 
-    @Column("int")
-    owner_id: number
+    @Column("uuid")
+    owner_id: string
 
     @CreateDateColumn()
     create_date: Date
