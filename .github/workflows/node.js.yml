@@ -1,4 +1,4 @@
-name: Deploy my-app
+name: my-app
 
 on:
   push:
@@ -70,4 +70,4 @@ jobs:
         pwd # 打印当前工作目录
         WORKSPACE=$(pwd)
         echo "Current workspace: $WORKSPACE"
-        s deploy -y --use-local --skip-push -t ${WORKSPACE}/s.yaml --access default --account-id $ALIYUN_ACCOUNT_ID --access-key-id $ALIYUN_ACCESS_KEY_ID --access-key-secret $ALIYUN_ACCESS_KEY_SECRET
+        s deploy -y --use-local --skip-push -t ${WORKSPACE}/s.yaml --access default
