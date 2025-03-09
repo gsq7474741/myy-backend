@@ -34,8 +34,15 @@ jobs:
     - name: Print .s/config.yaml content for debugging
       run: cat .s/config.yaml
 
+    - name: Set correct permissions for .s/config.yaml
+      run: chmod 600 .s/config.yaml
+
     - name: Verify configuration is loaded
       run: s config get --access default
+
+    - name: Add access configuration manually (if needed)
+      run: |
+        s config add --access default --account-id ${{ secrets.ALIYUN_ACCOUNT_ID }} --access-key-id ${{ secrets.ALIYUN_ACCESS_KEY_ID }} --access-key-secret ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
 
     - name: Deploy to Aliyun FC
       if: github.ref == 'refs/heads/develop' # 确保只在特定分支上执行部署
