@@ -39,15 +39,8 @@ jobs:
       run: tree -aL 2
 
     - name: Verify configuration is loaded using explicit path
-      run: s config get --access default --config .s/config.yaml
+      run: s config add -a default-aliyun -kl AccountID,AccessKeyID,AccessKeySecret -il ${ALIBABA_CLOUD_ACCOUNT_ID},${ALIBABA_CLOUD_ACCESS_KEY_ID},${ALIBABA_CLOUD_ACCESS_KEY_SECRET} -f
 
-    - name: Create default config file (optional)
-      run: |
-        mkdir -p ${HOME}/.s
-        cp .s/config.yaml ${HOME}/.s/access.yaml
-
-    - name: Verify configuration is loaded from default path (optional)
-      run: s config get --access default
 
     - name: Deploy to Aliyun FC
       if: github.ref == 'refs/heads/develop' # 确保只在特定分支上执行部署
