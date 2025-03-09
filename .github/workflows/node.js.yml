@@ -22,14 +22,14 @@ jobs:
     - name: Build project
       run: npm run build
 
-    - name: Create .s directory and access config file
-      run: |
-        mkdir -p .s
-        cat <<EOF > .s/access.yaml
-        default:
-          accountid: ${{ secrets.ALIYUN_ACCOUNT_ID }}
-          access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
-          access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+    - name: Create .s directory and config file  
+      run: |  
+        mkdir -p .s  
+        cat <<EOF > .s/config.yaml  
+        default:  
+          accountid: ${{ secrets.ALIYUN_ACCOUNT_ID }}  
+          access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}  
+          access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}  
         EOF
     
     - name: Debug config.yaml  
