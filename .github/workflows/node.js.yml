@@ -28,8 +28,8 @@ jobs:
         cat <<EOF > .s/config.yaml  
         default:  
           accountid: ${{ secrets.ALIYUN_ACCOUNT_ID }}  
-          access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}  
-          access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}  
+          AccessKeyId: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}  
+          AccessKeySecret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}  
         EOF  
     
     - name: Debug config.yaml  
