@@ -35,7 +35,7 @@ jobs:
       run: cat .s/config.yaml
 
     - name: Print current directory structure
-      run: tree -L 2
+      run: tree -aL 2
 
     - name: Verify configuration is loaded
       run: s config get --access default
