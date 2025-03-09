@@ -24,22 +24,14 @@ jobs:
 
     - name: Create .s directory and config file  
       run: |  
-        mkdir -p .s  
-        cat <<EOF > .s/access.yaml  
+        mkdir -p ${HOME}/.s  
+        cat <<EOF > ${HOME}/.s/access.yaml  
         default:  
           accountid: ${{ secrets.ALIYUN_ACCOUNT_ID }}  
           access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}  
           access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}  
         EOF
-    
-    - name: Debug access.yaml  
-      run: cat .s/access.yaml  
-    
-    - name: Create default config file  
-      run: |  
-        mkdir -p ${HOME}/.s  
-        cp .s/access.yaml ${HOME}/.s/access.yaml  
-    
+
     - name: Debug access.yaml  
       run: cat ${HOME}/.s/access.yaml  
     
@@ -58,4 +50,4 @@ jobs:
         pwd  
         WORKSPACE=$(pwd)  
         echo "Current workspace: $WORKSPACE"  
-        s deploy --access defaul --debug
+        s deploy --access default --debug  
