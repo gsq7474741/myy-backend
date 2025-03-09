@@ -38,20 +38,22 @@ jobs:
     - name: Install Serverless Devs CLI
       run: npm install -g @serverless-devs/s
 
-    - name: Set up Serverless Devs configuration using environment variables
+    - name: Set up environment variables for Serverless Devs
       run: |
-        s config add -a default-aliyun -kl AccountID,AccessKeyID,AccessKeySecret -il "${{ secrets.ALIYUN_ACCOUNT_ID }}","${{ secrets.ALIYUN_ACCESS_KEY_ID }}","${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}" -f
+        echo "ALIBABA_CLOUD_ACCOUNT_ID=${{ secrets.ALIYUN_ACCOUNT_ID }}" >> $GITHUB_ENV
+        echo "ALIBABA_CLOUD_ACCESS_KEY_ID=${{ secrets.ALIYUN_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+        echo "ALIBABA_CLOUD_ACCESS_KEY_SECRET=${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}" >> $GITHUB_ENV
 
     - name: Deploy to Aliyun FC
       if: github.ref == 'refs/heads/develop' # 确保只在特定分支上执行部署
       env:
-        ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
-        ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
-        ALIYUN_ACCOUNT_ID: ${{ secrets.ALIYUN_ACCOUNT_ID }}
+        ALIBABA_CLOUD_ACCOUNT_ID: ${{ secrets.ALIYUN_ACCOUNT_ID }}
+        ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+        ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         DB_HOST: ${{ secrets.DB_HOST }}
         DB_PORT: ${{ secrets.DB_PORT }}
         DB_USERNAME: ${{ secrets.DB_USERNAME }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         DB_DATABASE: ${{ secrets.DB_DATABASE }}
       run: |
-        s deploy -y --use-local --skip-push -t s.yaml --env default
+        s deploy -y --use-local --skip-push -t s.yaml
