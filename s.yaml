@@ -29,7 +29,7 @@ resources:
         port: 9000
       triggers:
         - domainName: foliumatrix.com
-        - triggerConfig:
+          triggerConfig:
             methods:
               - GET
               - POST
