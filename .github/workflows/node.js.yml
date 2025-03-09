@@ -35,6 +35,13 @@ jobs:
     - name: Run tests
       run: npm test
 
+    - name: Install Serverless Devs CLI
+      run: npm install -g @serverless-devs/s
+
+    - name: Initialize environment and set credentials
+      run: |
+        s env init --name default --access-key "${{ secrets.ALIYUN_ACCESS_KEY_ID }}" --secret-key "${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}" --account-id "${{ secrets.ALIYUN_ACCOUNT_ID }}"
+
     - name: Deploy to Aliyun FC
       if: github.ref == 'refs/heads/develop' # 确保只在特定分支上执行部署
       env:
@@ -47,5 +54,4 @@ jobs:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         DB_DATABASE: ${{ secrets.DB_DATABASE }}
       run: |
-        npm install -g @serverless-devs/s # 安装Serverless Devs CLI
-        s deploy -y --use-local --skip-push -t s.yaml --env default # 使用Serverless Devs进行部署
+        s deploy -y --use-local --skip-push -t s.yaml --env default
