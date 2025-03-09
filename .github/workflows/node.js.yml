@@ -34,9 +34,6 @@ jobs:
     - name: Print .s/config.yaml content for debugging
       run: cat .s/config.yaml
 
-    - name: Verify configuration is loaded
-      run: s config list
-
     - name: Deploy to Aliyun FC
       if: github.ref == 'refs/heads/develop' # 确保只在特定分支上执行部署
       env:
