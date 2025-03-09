@@ -48,6 +48,7 @@ jobs:
       run: |
         mkdir -p ${HOME}/.s
         cp .s/config.yaml ${HOME}/.s/access.yaml
+        cat .s/access.yaml
 
     - name: Set correct permissions for access.yaml
       run: chmod 600 ${HOME}/.s/access.yaml
