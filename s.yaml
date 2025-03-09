@@ -4,6 +4,7 @@ access: 'default'
 
 vars:
   region: 'us-west-1'
+  account_id: '200949340564273060'  # 显式指定 account-id
 
 resources:
   my_app:
