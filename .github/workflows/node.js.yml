@@ -16,6 +16,9 @@ jobs:
     - name: Install Serverless Devs CLI
       run: npm install -g @serverless-devs/s
 
+    - name: Build project
+      run: npm run build
+
     - name: Create .s directory and config file
       run: |
         mkdir -p .s
