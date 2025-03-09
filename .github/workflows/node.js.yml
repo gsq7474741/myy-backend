@@ -1,38 +1,17 @@
-name: Node.js CI/CD
+name: Deploy my-app
 
 on:
   push:
     branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
 
 jobs:
-  build-and-deploy:
+  deploy:
 
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Build project
-      run: npm run build --if-present
-
-    - name: Run tests
-      run: npm test
 
     - name: Install Serverless Devs CLI
       run: npm install -g @serverless-devs/s
@@ -42,9 +21,9 @@ jobs:
         mkdir -p .s
         cat <<EOF > .s/config.yaml
         default:
-          account-id: ${{ secrets.ALIYUN_ACCOUNT_ID }}
-          access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
-          access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+          account-id: ${{ secrets.ALIBABA_CLOUD_ACCOUNT_ID }}
+          access-key-id: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
         EOF
         # 输出生成的配置文件内容，以便调试
         cat .s/config.yaml
@@ -55,12 +34,15 @@ jobs:
     - name: Print .s/config.yaml content for debugging
       run: cat .s/config.yaml
 
+    - name: Verify configuration is loaded
+      run: s config list
+
     - name: Deploy to Aliyun FC
-      if: github.ref == 'refs/heads/develop' # 确保只在特定分支上执行部署
+      if: github.ref == 'refs/heads/develop'
       env:
-        ALIYUN_ACCOUNT_ID: ${{ secrets.ALIYUN_ACCOUNT_ID }}
-        ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
-        ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+        ALIBABA_CLOUD_ACCOUNT_ID: ${{ secrets.ALIBABA_CLOUD_ACCOUNT_ID }}
+        ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
+        ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
         DB_HOST: ${{ secrets.DB_HOST }}
         DB_PORT: ${{ secrets.DB_PORT }}
         DB_USERNAME: ${{ secrets.DB_USERNAME }}
@@ -68,4 +50,7 @@ jobs:
         DB_DATABASE: ${{ secrets.DB_DATABASE }}
       run: |
         pwd # 打印当前工作目录
-        s deploy -y --use-local --skip-push -t s.yaml --access default
+        WORKSPACE=$(pwd)
+        echo "Current workspace: $WORKSPACE"
+        # 使用绝对路径指定配置文件
+        s deploy -y --use-local --skip-push -t ${WORKSPACE}/s.yaml --config ${WORKSPACE}/.s/config.yaml --access default
