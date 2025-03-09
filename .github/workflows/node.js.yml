@@ -1,4 +1,4 @@
-name: my-app
+name: Deploy my-app
 
 on:
   push:
@@ -71,3 +71,4 @@ jobs:
         WORKSPACE=$(pwd)
         echo "Current workspace: $WORKSPACE"
         s deploy -y --use-local --skip-push -t ${WORKSPACE}/s.yaml --access default
+        cat /home/runner/.s/logs/<log-file-name>
