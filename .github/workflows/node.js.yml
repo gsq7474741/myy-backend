@@ -50,6 +50,9 @@ jobs:
         # 输出生成的配置文件内容，以便调试
         cat .s/config.yaml
 
+    - name: List files in current directory
+      run: ls -la
+
     - name: Deploy to Aliyun FC
       if: github.ref == 'refs/heads/develop' # 确保只在特定分支上执行部署
       env:
@@ -62,4 +65,5 @@ jobs:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         DB_DATABASE: ${{ secrets.DB_DATABASE }}
       run: |
+        pwd # 打印当前工作目录
         s deploy -y --use-local --skip-push -t s.yaml --access default
