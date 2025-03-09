@@ -37,6 +37,9 @@ jobs:
     - name: Print current directory structure
       run: tree -aL 2
 
+    - name: Set correct permissions for .s/config.yaml
+      run: chmod 600 .s/config.yaml
+    
     - name: Verify configuration is loaded
       run: s config get --access default
 
