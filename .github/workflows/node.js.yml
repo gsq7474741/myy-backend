@@ -58,4 +58,4 @@ jobs:
         pwd  
         WORKSPACE=$(pwd)  
         echo "Current workspace: $WORKSPACE"  
-        s deploy -y --use-local --skip-push -t ${WORKSPACE}/s.yaml --access default --config ${HOME}/.s/access.yaml --debug  
+        s deploy --access defaul --debug
