@@ -26,23 +26,36 @@ jobs:
           access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         EOF
         # 输出生成的配置文件内容，以便调试
+        ls -la .s
         cat .s/config.yaml
-
-    - name: List files in current directory to confirm path
-      run: ls -la
-
-    - name: Print .s/config.yaml content for debugging
-      run: cat .s/config.yaml
-
-    - name: Print current directory structure
-      run: tree -aL 2
 
     - name: Set correct permissions for .s/config.yaml
       run: chmod 600 .s/config.yaml
 
+    - name: List files in current directory to confirm path
+      run: ls -la
+
+    - name: Print current directory structure with hidden files
+      run: tree -aL 2
+
+    - name: Set environment variables for access keys
+      run: |
+        echo "ALIYUN_ACCOUNT_ID=${{ secrets.ALIYUN_ACCOUNT_ID }}" >> $GITHUB_ENV
+        echo "ALIYUN_ACCESS_KEY_ID=${{ secrets.ALIYUN_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+        echo "ALIYUN_ACCESS_KEY_SECRET=${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}" >> $GITHUB_ENV
+
+    - name: Verify configuration is loaded using environment variables
+      run: |
+        s config get --access default
+
+    - name: Add access configuration manually (if needed)
+      run: |
+        s config add --access default --account-id ${{ secrets.ALIYUN_ACCOUNT_ID }} --access-key-id ${{ secrets.ALIYUN_ACCESS_KEY_ID }} --access-key-secret ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+
     
-    - name: Verify configuration is loaded with explicit path
-      run: s config get --access default --config .s/config.yaml
+
+    - name: Verify configuration is loaded from default path (optional)
+      run: s config get --access default
 
     - name: Deploy to Aliyun FC
       if: github.ref == 'refs/heads/develop' # 确保只在特定分支上执行部署
@@ -59,5 +72,4 @@ jobs:
         pwd # 打印当前工作目录
         WORKSPACE=$(pwd)
         echo "Current workspace: $WORKSPACE"
-        # 使用绝对路径指定配置文件
-        s deploy -y --use-local --skip-push -t ${WORKSPACE}/s.yaml --config ${WORKSPACE}/.s/config.yaml --access default
+        s deploy -y --use-local --skip-push -t ${WORKSPACE}/s.yaml --access default
