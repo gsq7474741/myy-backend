@@ -22,53 +22,40 @@ jobs:
     - name: Build project
       run: npm run build
 
-    - name: Create .s directory and config file
-      run: |
-        mkdir -p .s
-        cat <<EOF > .s/config.yaml
-        default:
-          accountid: ${{ secrets.ALIYUN_ACCOUNT_ID }}
-          access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
-          access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
-        EOF
-        # 输出生成的配置文件内容，以便调试
-        ls -la .s
-        cat .s/config.yaml
-
-    - name: Set correct permissions for .s/config.yaml
-      run: chmod 600 .s/config.yaml
-
-    - name: List files in current directory to confirm path
-      run: ls -la
-
-    - name: Print current directory structure with hidden files
-      run: tree -aL 2
-
-    - name: Create default config file
-      run: |
-        mkdir -p ${HOME}/.s
-        cp .s/config.yaml ${HOME}/.s/access.yaml
-        cat ${HOME}/.s/access.yaml
-
-    - name: Set correct permissions for access.yaml
-      run: chmod 600 ${HOME}/.s/access.yaml
-
-    - name: Verify configuration is loaded from default path
-      run: s config get --access default
-
-    - name: Deploy to Aliyun FC
-      if: github.ref == 'refs/heads/develop'
-      env:
-        ALIYUN_ACCOUNT_ID: ${{ secrets.ALIYUN_ACCOUNT_ID }}
-        ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
-        ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
-        DB_HOST: ${{ secrets.DB_HOST }}
-        DB_PORT: ${{ secrets.DB_PORT }}
-        DB_USERNAME: ${{ secrets.DB_USERNAME }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        DB_DATABASE: ${{ secrets.DB_DATABASE }}
-      run: |
-        pwd # 打印当前工作目录
-        WORKSPACE=$(pwd)
-        echo "Current workspace: $WORKSPACE"
-        s deploy -y --use-local --skip-push -t ${WORKSPACE}/s.yaml --access default --config ${HOME}/.s/access.yaml
+    - name: Create .s directory and config file  
+      run: |  
+        mkdir -p .s  
+        cat <<EOF > .s/config.yaml  
+        default:  
+          accountid: ${{ secrets.ALIYUN_ACCOUNT_ID }}  
+          access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}  
+          access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}  
+        EOF  
+    
+    - name: Debug config.yaml  
+      run: cat .s/config.yaml  
+    
+    - name: Create default config file  
+      run: |  
+        mkdir -p ${HOME}/.s  
+        cp .s/config.yaml ${HOME}/.s/access.yaml  
+    
+    - name: Debug access.yaml  
+      run: cat ${HOME}/.s/access.yaml  
+    
+    - name: Deploy to Aliyun FC  
+      if: github.ref == 'refs/heads/develop'  
+      env:  
+        ALIYUN_ACCOUNT_ID: ${{ secrets.ALIYUN_ACCOUNT_ID }}  
+        ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}  
+        ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}  
+        DB_HOST: ${{ secrets.DB_HOST }}  
+        DB_PORT: ${{ secrets.DB_PORT }}  
+        DB_USERNAME: ${{ secrets.DB_USERNAME }}  
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}  
+        DB_DATABASE: ${{ secrets.DB_DATABASE }}  
+      run: |  
+        pwd  
+        WORKSPACE=$(pwd)  
+        echo "Current workspace: $WORKSPACE"  
+        s deploy -y --use-local --skip-push -t ${WORKSPACE}/s.yaml --access default --config ${HOME}/.s/access.yaml --debug  
