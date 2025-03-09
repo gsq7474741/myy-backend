@@ -38,11 +38,9 @@ jobs:
     - name: Install Serverless Devs CLI
       run: npm install -g @serverless-devs/s
 
-    - name: Set up Serverless Devs configuration
+    - name: Set up Serverless Devs configuration using environment variables
       run: |
-        s config set --key accessKeyID --value "${{ secrets.ALIYUN_ACCESS_KEY_ID }}" --project myy-backend
-        s config set --key accessKeySecret --value "${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}" --project myy-backend
-        s config set --key accountID --value "${{ secrets.ALIYUN_ACCOUNT_ID }}" --project myy-backend
+        s config add -a default-aliyun -kl AccountID,AccessKeyID,AccessKeySecret -il "${{ secrets.ALIYUN_ACCOUNT_ID }}","${{ secrets.ALIYUN_ACCESS_KEY_ID }}","${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}" -f
 
     - name: Deploy to Aliyun FC
       if: github.ref == 'refs/heads/develop' # 确保只在特定分支上执行部署
