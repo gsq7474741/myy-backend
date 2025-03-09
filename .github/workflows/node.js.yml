@@ -47,6 +47,7 @@ jobs:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}  
         DB_DATABASE: ${{ secrets.DB_DATABASE }}  
       run: |  
+        cat ${HOME}/.s/access.yaml
         pwd  
         WORKSPACE=$(pwd)  
         echo "Current workspace: $WORKSPACE"  
