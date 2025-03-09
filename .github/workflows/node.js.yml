@@ -38,12 +38,19 @@ jobs:
     - name: Print current directory structure with hidden files
       run: tree -aL 2
 
-    - name: Verify configuration is loaded
+    - name: Create default config file
+      run: |
+        mkdir -p ${HOME}/.s
+        cp .s/config.yaml ${HOME}/.s/access.yaml
+
+    - name: Set correct permissions for access.yaml
+      run: chmod 600 ${HOME}/.s/access.yaml
+
+    - name: Verify configuration is loaded from default path
       run: s config get --access default
 
-
     - name: Deploy to Aliyun FC
-      if: github.ref == 'refs/heads/develop' # 确保只在特定分支上执行部署
+      if: github.ref == 'refs/heads/develop'
       env:
         ALIYUN_ACCOUNT_ID: ${{ secrets.ALIYUN_ACCOUNT_ID }}
         ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
@@ -57,4 +64,4 @@ jobs:
         pwd # 打印当前工作目录
         WORKSPACE=$(pwd)
         echo "Current workspace: $WORKSPACE"
-        s deploy -y --use-local --skip-push -t ${WORKSPACE}/s.yaml --config ${WORKSPACE}/.s/config.yaml --access default
+        s deploy -y --use-local --skip-push -t ${WORKSPACE}/s.yaml --access default
