@@ -32,8 +32,9 @@ jobs:
           access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}  
         EOF
 
-    - name: Debug access.yaml  
-      run: cat ${HOME}/.s/access.yaml  
+    - name: Verify access.yaml content (for debugging purposes only)
+      run: |
+        cat ${HOME}/.s/access.yaml
     
     - name: Deploy to Aliyun FC  
       if: github.ref == 'refs/heads/develop'  
@@ -51,4 +52,4 @@ jobs:
         pwd  
         WORKSPACE=$(pwd)  
         echo "Current workspace: $WORKSPACE"  
-        s deploy --access default --debug  
+        s deploy --access-file ${HOME}/.s/access.yaml --debug  
