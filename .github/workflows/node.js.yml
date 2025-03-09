@@ -39,9 +39,10 @@ jobs:
 
     - name: Set correct permissions for .s/config.yaml
       run: chmod 600 .s/config.yaml
+
     
-    - name: Verify configuration is loaded
-      run: s config get --access default
+    - name: Verify configuration is loaded with explicit path
+      run: s config get --access default --config .s/config.yaml
 
     - name: Deploy to Aliyun FC
       if: github.ref == 'refs/heads/develop' # 确保只在特定分支上执行部署
