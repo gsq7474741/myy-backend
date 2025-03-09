@@ -38,8 +38,8 @@ jobs:
     - name: Print current directory structure with hidden files
       run: tree -aL 2
 
-    - name: Verify configuration is loaded using explicit path
-      run: s config add -a default-aliyun -kl AccountID,AccessKeyID,AccessKeySecret -il ${ALIBABA_CLOUD_ACCOUNT_ID},${ALIBABA_CLOUD_ACCESS_KEY_ID},${ALIBABA_CLOUD_ACCESS_KEY_SECRET} -f
+    - name: Verify configuration is loaded
+      run: s config get --access default
 
 
     - name: Deploy to Aliyun FC
