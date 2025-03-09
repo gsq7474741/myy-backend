@@ -71,4 +71,4 @@ jobs:
         pwd # 打印当前工作目录
         WORKSPACE=$(pwd)
         echo "Current workspace: $WORKSPACE"
-        s deploy -y --use-local --skip-push -t ${WORKSPACE}/s.yaml --access default
+        s deploy -y --use-local --skip-push -t ${WORKSPACE}/s.yaml --access default --config ${HOME}/.s/access.yaml
