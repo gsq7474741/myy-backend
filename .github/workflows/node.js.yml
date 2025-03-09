@@ -32,8 +32,8 @@ jobs:
           access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}  
         EOF
     
-    - name: Debug config.yaml  
-      run: cat .s/config.yaml  
+    - name: Debug access.yaml  
+      run: cat .s/access.yaml  
     
     - name: Create default config file  
       run: |  
