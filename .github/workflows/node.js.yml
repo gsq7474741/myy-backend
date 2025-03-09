@@ -14,7 +14,6 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x, 20.x]
-        # 根据需要选择支持的Node.js版本
 
     steps:
     - name: Checkout code
@@ -43,22 +42,22 @@ jobs:
         mkdir -p .s
         cat <<EOF > .s/config.yaml
         default:
-          account-id: ${{ secrets.ALIBABA_CLOUD_ACCOUNT_ID }}
-          access-key-id: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
-          access-key-secret: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
+          account-id: ${{ secrets.ALIYUN_ACCOUNT_ID }}
+          access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         EOF
         # 输出生成的配置文件内容，以便调试
         cat .s/config.yaml
 
-    - name: List files in current directory
+    - name: List files in current directory to confirm path
       run: ls -la
 
     - name: Deploy to Aliyun FC
       if: github.ref == 'refs/heads/develop' # 确保只在特定分支上执行部署
       env:
-        ALIBABA_CLOUD_ACCOUNT_ID: ${{ secrets.ALIBABA_CLOUD_ACCOUNT_ID }}
-        ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_ID }}
-        ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY_SECRET }}
+        ALIYUN_ACCOUNT_ID: ${{ secrets.ALIYUN_ACCOUNT_ID }}
+        ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+        ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
         DB_HOST: ${{ secrets.DB_HOST }}
         DB_PORT: ${{ secrets.DB_PORT }}
         DB_USERNAME: ${{ secrets.DB_USERNAME }}
