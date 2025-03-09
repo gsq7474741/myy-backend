@@ -52,6 +52,9 @@ jobs:
     - name: List files in current directory to confirm path
       run: ls -la
 
+    - name: Print .s/config.yaml content for debugging
+      run: cat .s/config.yaml
+
     - name: Deploy to Aliyun FC
       if: github.ref == 'refs/heads/develop' # 确保只在特定分支上执行部署
       env:
