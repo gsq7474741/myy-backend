@@ -56,4 +56,13 @@ jobs:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         DB_DATABASE: ${{ secrets.DB_DATABASE }}
       run: |
-        s deploy -y --use-local --skip-push -t s.yaml
+        # 创建一个临时的配置文件来存储环境变量
+        cat <<EOF > .s/config.yaml
+        default:
+          account-id: ${ALIBABA_CLOUD_ACCOUNT_ID}
+          access-key-id: ${ALIBABA_CLOUD_ACCESS_KEY_ID}
+          access-key-secret: ${ALIBABA_CLOUD_ACCESS_KEY_SECRET}
+        EOF
+
+        # 部署应用
+        s deploy -y --use-local --skip-push -t s.yaml --access default
