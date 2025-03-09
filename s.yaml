@@ -28,7 +28,7 @@ resources:
           - index.js
         port: 9000
       triggers:
-        - domainName: api.foliumatrix.com
+        - domainName: foliumatrix.com
         - triggerConfig:
             methods:
               - GET

@@ -17,7 +17,8 @@ jobs:
         # 根据需要选择支持的Node.js版本
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
@@ -25,18 +26,21 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    - run: npm ci
+    - name: Install dependencies
+      run: npm ci
 
-    - run: npm run build --if-present
+    - name: Build project
+      run: npm run build --if-present
 
-    - run: npm test
+    - name: Run tests
+      run: npm test
 
     - name: Deploy to Aliyun FC
       if: github.ref == 'refs/heads/develop' # 确保只在特定分支上执行部署
       env:
-        ALIYUN_ACCESS_KEY_ID: ${{secrets.ALIYUN_ACCESS_KEY_ID}}
-        ALIYUN_ACCESS_KEY_SECRET: ${{secrets.ALIYUN_ACCESS_KEY_SECRET}}
-        ALIYUN_ACCOUNT_ID: ${{secrets.ALIYUN_ACCOUNT_ID}}
+        ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+        ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+        ALIYUN_ACCOUNT_ID: ${{ secrets.ALIYUN_ACCOUNT_ID }}
         DB_HOST: ${{ secrets.DB_HOST }}
         DB_PORT: ${{ secrets.DB_PORT }}
         DB_USERNAME: ${{ secrets.DB_USERNAME }}
@@ -44,4 +48,4 @@ jobs:
         DB_DATABASE: ${{ secrets.DB_DATABASE }}
       run: |
         npm install -g @serverless-devs/s # 安装Serverless Devs CLI
-        s deploy -y # 使用Serverless Devs进行部署
+        s deploy -y --use-local --skip-push -t s.yaml --env default # 使用Serverless Devs进行部署
