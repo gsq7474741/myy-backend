@@ -1,7 +1,7 @@
 import { AppDataSource } from '../db/orm/data-source';
 import { User } from '../entity/User';
 import { Context } from 'hono';
-import SmsService from '../services/sms_service';
+//import SmsService from '../services/sms_service';
 import { generateSecureRandomCode } from '../utils/randomCodeGenerator';
 import * as dotenv from 'dotenv';
 import { handleErrorResponse, handleSuccessResponse } from '../utils/response';
@@ -40,36 +40,36 @@ export class UserController {
             return c.json({ error: 'Internal Server Error' }, 500);
         }
     }
-    //实现发送验证码的功能
-    async getVerifaction(phone: string) {
-        try {
-            const smsService = new SmsService();
+    // //实现发送验证码的功能
+    // async getVerifaction(phone: string) {
+    //     try {
+    //         const smsService = new SmsService();
 
-            // 从环境变量中读取 signName 和 templateCode
-            const signName = process.env.SIGN_NAME;
-            const templateCode = process.env.TEMPLATE_CODE;
-            const code = generateSecureRandomCode(6); // 示例验证码，可以随机生成
+    //         // 从环境变量中读取 signName 和 templateCode
+    //         const signName = process.env.SIGN_NAME;
+    //         const templateCode = process.env.TEMPLATE_CODE;
+    //         const code = generateSecureRandomCode(6); // 示例验证码，可以随机生成
 
 
-            if (!signName || !templateCode) {
-                throw new Error('Missing required environment variables for SMS service');
-            }
+    //         if (!signName || !templateCode) {
+    //             throw new Error('Missing required environment variables for SMS service');
+    //         }
 
-            const result = await smsService.sendVerificationCode(phone, code, signName, templateCode);
+    //         const result = await smsService.sendVerificationCode(phone, code, signName, templateCode);
 
-            if (result.success) {
-                console.log('验证码发送成功');
-            } else {
-                console.error('验证码发送失败');
-            }
-        } catch (error) {
-            if (error instanceof Error) { // 进行类型检查和断言
-                console.error('处理过程中发生错误:', error.message);
-            } else {
-                console.error('处理过程中发生未知错误:', error);
-            }
-        }
-    }
+    //         if (result.success) {
+    //             console.log('验证码发送成功');
+    //         } else {
+    //             console.error('验证码发送失败');
+    //         }
+    //     } catch (error) {
+    //         if (error instanceof Error) { // 进行类型检查和断言
+    //             console.error('处理过程中发生错误:', error.message);
+    //         } else {
+    //             console.error('处理过程中发生未知错误:', error);
+    //         }
+    //     }
+    // }
 
     // //实现发送验证码的功能
     // async register(c: Context) {
