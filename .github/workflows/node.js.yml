@@ -27,9 +27,6 @@ jobs:
       run: npm run build
 
 
-    - name: Verify access.yaml content (for debugging purposes only)
-      run: |
-        cat ${HOME}/.s/access.yaml
     
     - name: Verify configuration is loaded from default path
       run: s config get --access default
@@ -46,7 +43,9 @@ jobs:
         DB_PORT: ${{ secrets.DB_PORT }}  
         DB_USERNAME: ${{ secrets.DB_USERNAME }}  
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}  
-        DB_DATABASE: ${{ secrets.DB_DATABASE }}  
+        DB_DATABASE: ${{ secrets.DB_DATABASE }} 
+    - name: Verify configuration is loaded from default path
+      run: s config get --access default 
     - run: s deploy function --type code --use-local
     
     
