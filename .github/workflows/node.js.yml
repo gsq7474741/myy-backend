@@ -34,7 +34,7 @@ jobs:
 
     # 上一步配置的密钥就用在这里
     - name: Add Serverless Devs Config
-      run: s config add --AccountID ${{ secrets.ACCOUNT_ID }} --AccessKeyID ${{ secrets.ACCESS_KEY_ID }} --AccessKeySecret ${{ secrets.ACCESS_KEY_SECRET }} -a default
+      run: s config add --AccountID ${{ secrets.ALIYUN_ACCOUNT_ID }} --AccessKeyID ${{ secrets.ALIYUN_ACCESS_KEY_ID }} --AccessKeySecret ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }} -a default
       env:  
         ALIYUN_ACCOUNT_ID: ${{ secrets.ALIYUN_ACCOUNT_ID }}  
         ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}  
