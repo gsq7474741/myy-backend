@@ -9,6 +9,7 @@ resources:
   my_app:
     component: fc3
     props:
+      domainName: 'foliumatrix.com'  
       region: ${vars.region}
       functionName: 'my-app'
       runtime: 'custom.debian10'

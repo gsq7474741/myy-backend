@@ -42,6 +42,6 @@ jobs:
         DB_DATABASE: ${{ secrets.DB_DATABASE }} 
     - name: Verify configuration is loaded from default path
       run: s config get --access default 
-    - run: s deploy --use-local --assume-yes --skip-push -t s.yaml --env default
+    - run: s deploy --use-local --assume-yes --skip-push -t s.yaml --env default --debug
     
     
