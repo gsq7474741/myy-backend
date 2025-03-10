@@ -59,4 +59,4 @@ jobs:
         pwd  
         WORKSPACE=$(pwd)  
         echo "Current workspace: $WORKSPACE"  
-        s deploy --access-file ${HOME}/.s/access.yaml --debug  
+        s deploy --access-file ${HOME}/.s/access.yaml --accountid "200949340564273060" --debug  
