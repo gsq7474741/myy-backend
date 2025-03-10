@@ -11,6 +11,7 @@ resources:
     props:
       serviceName: 'my-service'
       domainName: 'foliumatrix.com'  
+      codeUri: ./dist  
       region: ${vars.region}
       functionName: 'my-app'
       runtime: 'custom.debian10'
