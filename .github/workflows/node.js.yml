@@ -19,32 +19,34 @@ jobs:
     - name: Install dependencies
       run: npm install
     
-    - name: Install yq for YAML parsing
+    - name: Create env.yaml
       run: |
-        sudo wget -qO /usr/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-        sudo chmod +x /usr/bin/yq
-    - name: Build project
-      run: npm run build
-
-    - name: Create .s directory and config file  
-      run: |  
-        mkdir -p ${HOME}/.s  
-        cat <<EOF > ${HOME}/.s/access.yaml  
-        default:  
-          accountid: ${{ secrets.ALIYUN_ACCOUNT_ID }}
-          access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}  
-          access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}  
+        cat <<EOF > env.yaml
+        default:
+          ALIYUN_ACCOUNT_ID: '${{ secrets.ALIYUN_ACCOUNT_ID }}'
+          ALIYUN_ACCESS_KEY_ID: '${{ secrets.ALIYUN_ACCESS_KEY_ID }}'
+          ALIYUN_ACCESS_KEY_SECRET: '${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}'
+          DB_HOST: '${{ secrets.DB_HOST }}'
+          DB_PORT: '${{ secrets.DB_PORT }}'
+          DB_USERNAME: '${{ secrets.DB_USERNAME }}'
+          DB_PASSWORD: '${{ secrets.DB_PASSWORD }}'
+          DB_DATABASE: '${{ secrets.DB_DATABASE }}'
+          NODE_ENV: 'production'
         EOF
-
-    - name: Verify access.yaml content (for debugging purposes only)
+    - name: Build project
       run: |
-        cat ${HOME}/.s/access.yaml
+        npm run build
+        echo "Build completed. Listing contents of dist directory:"
+
+
     
     - name: Verify configuration is loaded from default path
       run: s config get --access default
     
-    - name: Deploy to Aliyun FC-1  
-      if: github.ref == 'refs/heads/develop'  
+
+    # 上一步配置的密钥就用在这里
+    - name: Add Serverless Devs Config
+      run: s config add --AccountID ${{ secrets.ALIYUN_ACCOUNT_ID }} --AccessKeyID ${{ secrets.ALIYUN_ACCESS_KEY_ID }} --AccessKeySecret ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }} -a default
       env:  
         ALIYUN_ACCOUNT_ID: ${{ secrets.ALIYUN_ACCOUNT_ID }}  
         ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}  
@@ -53,10 +55,13 @@ jobs:
         DB_PORT: ${{ secrets.DB_PORT }}  
         DB_USERNAME: ${{ secrets.DB_USERNAME }}  
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}  
-        DB_DATABASE: ${{ secrets.DB_DATABASE }}  
-      run: |  
-        cat ${HOME}/.s/access.yaml
-        pwd  
-        WORKSPACE=$(pwd)  
-        echo "Current workspace: $WORKSPACE"  
-        s deploy --access-file /home/runner/.s/access.yaml --accountid "200949340564273060" --debug 
+        DB_DATABASE: ${{ secrets.DB_DATABASE }} 
+    - name: Verify configuration is loaded from default path
+      run: s config get --access default 
+    - run: |
+        echo "Listing contents of current directory before deployment:"
+        ls -la
+        echo "Listing contents of dist directory before deployment:"
+        ls -la ./dist
+        s deploy --use-local --assume-yes --skip-push -t s.yaml --env default --debug
+    

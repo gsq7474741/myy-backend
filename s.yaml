@@ -3,16 +3,14 @@ name: my-app
 access: 'default'
 
 vars:
-  region: 'us-west-1'
-  
+  region: 'cn-shenzhen'
 
 resources:
   my_app:
     component: fc3
     props:
-      accountid: ${credential.accountid}
-      accessKeyId: ${credential.access-key-id}
-      accessKeySecret: ${credential.access-key-secret}
+      serviceName: 'my-service'
+      domainName: 'foliumatrix.com'  
       region: ${vars.region}
       functionName: 'my-app'
       runtime: 'custom.debian10'
@@ -32,8 +30,7 @@ resources:
           - index.js
         port: 9000
       triggers:
-        - domainName: foliumatrix.com
-          triggerConfig:
+        - triggerConfig:
             methods:
               - GET
               - POST
