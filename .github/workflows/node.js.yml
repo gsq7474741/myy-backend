@@ -20,7 +20,9 @@ jobs:
       run: npm install
     
     - name: Build project
-      run: npm run build
+      run: |
+        npm run build
+        echo "Build completed. Listing contents of dist directory:"
 
 
     
@@ -42,6 +44,10 @@ jobs:
         DB_DATABASE: ${{ secrets.DB_DATABASE }} 
     - name: Verify configuration is loaded from default path
       run: s config get --access default 
-    - run: s deploy --use-local --assume-yes --skip-push -t s.yaml --env default --debug
-    
+    - run: |
+        echo "Listing contents of current directory before deployment:"
+        ls -la
+        echo "Listing contents of dist directory before deployment:"
+        ls -la ./dist
+        s deploy --use-local --assume-yes --skip-push -t s.yaml --env default --debug
     
