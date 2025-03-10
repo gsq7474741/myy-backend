@@ -19,6 +19,10 @@ jobs:
     - name: Install dependencies
       run: npm install
     
+    - name: Install yq for YAML parsing
+      run: |
+        sudo wget -qO /usr/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+        sudo chmod +x /usr/bin/yq
     - name: Build project
       run: npm run build
 
@@ -44,11 +48,28 @@ jobs:
           exit 1
         fi
         ACCOUNTID=$(yq eval '.default.accountid' "$CONFIG_FILE")
+        ACCESS_KEY_ID=$(yq eval '.default.access-key-id' "$CONFIG_FILE")
+        ACCESS_KEY_SECRET=$(yq eval '.default.access-key-secret' "$CONFIG_FILE")
+        
         if [ -z "$ACCOUNTID" ]; then
           echo "Error: 'accountid' field is missing or empty in the 'default' section of $CONFIG_FILE"
           exit 1
         else
           echo "Success: 'accountid' field is present and set to '$ACCOUNTID'"
+        fi
+        
+        if [ -z "$ACCESS_KEY_ID" ]; then
+          echo "Error: 'access-key-id' field is missing or empty in the 'default' section of $CONFIG_FILE"
+          exit 1
+        else
+          echo "Success: 'access-key-id' field is present and set to '$ACCESS_KEY_ID'"
+        fi
+        
+        if [ -z "$ACCESS_KEY_SECRET" ]; then
+          echo "Error: 'access-key-secret' field is missing or empty in the 'default' section of $CONFIG_FILE"
+          exit 1
+        else
+          echo "Success: 'access-key-secret' field is present and set to '$ACCESS_KEY_SECRET'"
         fi
 
     - name: Deploy to Aliyun FC  
