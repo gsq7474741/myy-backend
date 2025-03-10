@@ -43,7 +43,7 @@ jobs:
     - name: Verify configuration is loaded from default path
       run: s config get --access default
     
-    - name: Deploy to Aliyun FC  
+    - name: Deploy to Aliyun FC-1  
       if: github.ref == 'refs/heads/develop'  
       env:  
         ALIYUN_ACCOUNT_ID: ${{ secrets.ALIYUN_ACCOUNT_ID }}  
