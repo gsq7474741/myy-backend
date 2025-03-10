@@ -40,6 +40,8 @@ jobs:
       run: |
         cat ${HOME}/.s/access.yaml
     
+    - name: Verify configuration is loaded from default path
+      run: s config get --access default
     - name: Check if accountid is present in default section
       run: |
         CONFIG_FILE="${HOME}/.s/access.yaml"
