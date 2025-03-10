@@ -38,7 +38,7 @@ jobs:
 
     - name: Verify access.yaml content (for debugging purposes only)
       run: |
-        cat {HOME}/runner/.s/access.yaml  
+        cat ${HOME}/runner/.s/access.yaml  
     
     - name: Check if accountid is present in default section
       run: |
