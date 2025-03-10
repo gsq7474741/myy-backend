@@ -31,6 +31,7 @@ jobs:
         mkdir -p ${HOME}/.s  
         cat <<EOF > ${HOME}/.s/access.yaml  
         default:  
+          accountid: ${{ secrets.ALIYUN_ACCOUNT_ID }}
           access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}  
           access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}  
         EOF
