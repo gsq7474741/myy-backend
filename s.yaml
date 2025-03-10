@@ -10,6 +10,9 @@ resources:
   my_app:
     component: fc3
     props:
+      accountid: ${credential.accountid}
+      accessKeyId: ${credential.access-key-id}
+      accessKeySecret: ${credential.access-key-secret}
       region: ${vars.region}
       functionName: 'my-app'
       runtime: 'custom.debian10'
