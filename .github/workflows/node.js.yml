@@ -19,10 +19,6 @@ jobs:
     - name: Install dependencies
       run: npm install
     
-    - name: Install yq for YAML parsing
-      run: |
-        sudo wget -qO /usr/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-        sudo chmod +x /usr/bin/yq
     - name: Build project
       run: npm run build
 
@@ -46,6 +42,6 @@ jobs:
         DB_DATABASE: ${{ secrets.DB_DATABASE }} 
     - name: Verify configuration is loaded from default path
       run: s config get --access default 
-    - run: s deploy function --type code --use-local
+    - run: s deploy --use-local --assume-yes --skip-push -t s.yaml --env default
     
     
