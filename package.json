@@ -5,9 +5,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch index.ts",
     "build": "node esbuild.mjs",
-    "start": "npm run build && node ./dist/index.js",
     "serve": "node ./dist/index.js",
     "deploy": "s deploy -y",
     "test": "jest",

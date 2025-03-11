@@ -3,7 +3,7 @@ import esbuildPluginPino from 'esbuild-plugin-pino';
 import esbuildPluginTsc from 'esbuild-plugin-tsc';
 
 build({
-    entryPoints: ['./src/index.ts'],
+    entryPoints: ['./index.ts'],
     outdir: 'dist',
     bundle: true,
     platform: 'node',
