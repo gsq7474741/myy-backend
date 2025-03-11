@@ -11,7 +11,6 @@ resources:
     props:
       serviceName: 'my-service'
       domainName: 'foliumatrix.com'  
-      codeUri: ./dist  # 确保指向构建后的目录
       region: ${vars.region}
       functionName: 'my-app'
       runtime: 'custom.debian10'
@@ -24,7 +23,7 @@ resources:
         NODE_PATH: /opt/nodejs/node_modules
       cpu: 0.5
       diskSize: 512
-      code: ./dist
+      code: ./*
       customRuntimeConfig:
         command:
           - node
