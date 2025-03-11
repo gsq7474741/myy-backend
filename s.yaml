@@ -23,7 +23,7 @@ resources:
         NODE_PATH: /opt/nodejs/node_modules
       cpu: 0.5
       diskSize: 512
-      code: ./myy-backend
+      code: ./
       customRuntimeConfig:
         command:
           - node
