@@ -1,4 +1,3 @@
-import * as dotenv from "dotenv";
 import "reflect-metadata"
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
@@ -11,16 +10,20 @@ import miscRoutes from "./src/routes/misc";
 import authRoutes from "./src/routes/auth";
 import userRoutes from "./src/routes/user_route";
 
-dotenv.config({ path: '.env.dev' });
-
-
 const indexLogger = createModuleLogger('index');
 
-
-dotenv.config({ path: '.env.dev' })
-indexLogger.info(".env file loaded")
-indexLogger.info(process.env)
-
+// 只在开发环境中加载.env文件
+// 在生产环境中，环境变量会通过esbuild插件嵌入到构建文件中
+if (process.env.NODE_ENV !== 'production') {
+  const { env } = await import("@dotenv-run/core");
+  env({ 
+    files: ['.env.dev'],
+    verbose: true 
+  });
+  
+  indexLogger.info(".env file loaded in development mode");
+  indexLogger.info(process.env);
+}
 
 // 创建应用
 const app = new Hono();
@@ -53,7 +56,7 @@ apiV1.route('/', userRoutes);
 
 app.route('/api/v1', apiV1);
 
-const port = 3090
+const port = process.env.NODE_ENV === 'development' ? 3090 : 9000
 
 
 AppDataSource.initialize().then(() => {
@@ -66,5 +69,3 @@ AppDataSource.initialize().then(() => {
 }).then(() => {
     indexLogger.info(`Server is running on port ${port}`)
 })
-
-
