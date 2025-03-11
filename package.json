@@ -6,8 +6,7 @@
   "main": "index.ts",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "npm install && node esbuild.mjs && npm run copy-modules",
-    "copy-modules": "shx cp -r node_modules dist/ && shx rm -rf dist/node_modules/.bin",
+    "build": "node esbuild.mjs",
     "serve": "node ./dist/index.js",
     "deploy": "s deploy -y",
     "test": "jest",
@@ -29,8 +28,7 @@
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.1.7",
     "typeorm": "0.3.20",
-    "uuid": "^11.0.3",
-    "cpx": "^1.5.0"
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
