@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 import { Context } from 'hono';
 import { Tree } from 'typeorm';
-import { AppDataSource } from '../db/orm/data-source';
+import { AppDataSource } from '../services/dataSource';
 
 // 加载 .env 文件
 dotenv.config({ path: '.env.dev' });

@@ -1,0 +1,9 @@
+0. 全程用中文和我交流
+0.1 项目所用部分库的文档在`.doc`文件夹中，在回答每个问题前要查阅文档
+1. 这是一个后端项目，面向树木物联网监测和养护小程序，项目使用TypeScript开发
+2. 项目使用了hono作为web框架，可以用网页浏览工具随时查阅以下链接。
+    - Docs List: https://hono.dev/llms.txt
+    - Full Docs: https://hono.dev/llms-full.txt
+    - Tiny Docs: https://hono.dev/llms-small.txt
+3. 项目使用了typeorm作为orm框架。
+    - Docs List: https://typeorm.bootcss.com/

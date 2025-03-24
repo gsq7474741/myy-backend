@@ -1,0 +1,11 @@
+# 角色定义（用户属于哪个角色）
+g, admin, admin_role
+g, frontend, frontend_role
+g, mobile, mobile_role
+
+# 角色权限
+p, admin_role, /api/*, *
+p, frontend_role, /api/users, GET
+p, frontend_role, /api/users/*, GET
+p, frontend_role, /api/public/*, *
+p, mobile_role, /api/public/*, GET

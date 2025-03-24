@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { createModuleLogger } from '../utils/logger';
-import { AppDataSource } from "../db/orm/data-source";
+import { AppDataSource } from "../services/dataSource";
 import * as bcrypt from 'bcrypt';
 import { Response400 } from "../utils/types";
 import { User } from "../entity/User";

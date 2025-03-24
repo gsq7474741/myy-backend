@@ -1,4 +1,4 @@
-import { AppDataSource } from '../db/orm/data-source';
+import { AppDataSource } from '../services/dataSource';
 import { User } from '../entity/User';
 import { Context } from 'hono';
 //import SmsService from '../services/sms_service';
