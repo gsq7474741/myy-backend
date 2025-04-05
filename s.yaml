@@ -63,5 +63,5 @@ resources:
             functionName: ${vars.functionName}
       certConfig:
         certName: foliumatrix-3
-        certificate: oss://myy-backend-foliumatrix/cert/cert.pem
-        privateKey: oss://myy-backend-foliumatrix/cert/private.pem
+        certificate: oss://cn-hongkong/myy-backend-foliumatrix/cert/cert.pem
+        privateKey: oss://cn-hongkong/myy-backend-foliumatrix/cert/private.pem
