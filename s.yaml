@@ -56,7 +56,7 @@ resources:
     props:
       region: ${vars.region}
       domainName: ${env(DOMAIN_PREFIX)}.foliumatrix.com
-      protocol: HTTP
+      protocol: HTTP,HTTPS
       routeConfig:
         routes:
           - path: /*
