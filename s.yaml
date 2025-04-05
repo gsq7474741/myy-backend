@@ -64,4 +64,4 @@ resources:
       certConfig:
         certName: foliumatrix-3
         certificate: oss://myy-backend-foliumatrix/cert/cert.pem
-        privateKey: oss://myy-backend-foliumatrix/cert/private.key
+        privateKey: oss://myy-backend-foliumatrix/cert/private.pem
