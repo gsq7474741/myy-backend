@@ -352,7 +352,7 @@ export class UserController {
             if (!user_id || isNaN(parseInt(user_id, 10))) {
                 return handleErrorResponse(c, 'Invalid or missing user_id parameter', 400);
             }
-            dataFluctuationService.updateWithFluctuation();
+            // dataFluctuationService.updateWithFluctuation();
             // 查找用户设备映射表中的记录
             console.log("到这儿了吗？");
             const parsedUserId = parseInt(user_id, 10);
