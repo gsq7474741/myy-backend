@@ -16,6 +16,7 @@ userRoutes.post('/login', userController.login.bind(userController));
 userRoutes.get('/users', authMiddleware, userController.getUsers);
 userRoutes.get('/users/id', authMiddleware, userController.getUserById);
 userRoutes.get('/users/get-mydev', authMiddleware, userController.getMyDev);
+userRoutes.get('/users/get-mydev-health', authMiddleware,userController.getMyDevHealth);
 userRoutes.get('/tree/task/:id/list', authMiddleware, userController.getTaskList);
 userRoutes.post('/users/upload-consultation', authMiddleware, userController.upload_consultations);
 userRoutes.post('/users/upload-work-order', authMiddleware, userController.upload_work_order);
