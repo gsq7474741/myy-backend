@@ -376,6 +376,37 @@ export class UserController {
             return handleErrorResponse(c, 'Failed to fetch devices', 500, error);
         }
     }
+    async getMyDevHealth(c: Context) {
+        const devRepository = AppDataSource.getRepository(Device);
+        try {
+            const device_id = c.req.query('device_id');
+            if (!device_id || isNaN(parseInt(device_id, 10))) {
+                return handleErrorResponse(c, 'Invalid or missing device_id parameter', 400);
+            }
+            const devIdNum = parseInt(device_id, 10);
+            const device = await devRepository.findOneBy({ id: devIdNum });
+            if (!device) {
+                return handleErrorResponse(c, 'Device not found', 404);
+            }
+            let status = '正常';
+            if (device.SoilHumidity > 50) {
+                status = '积水';
+            } else if (device.SoilHumidity < 15) {
+                status = '干旱';
+            } else {
+                const timeMs = device.time.toString().length === 10 ? device.time * 1000 : device.time;
+                const date = new Date(timeMs);
+                const hourInShanghai = parseInt(date.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false, hour: '2-digit' }), 10);
+                if (device.LightLux < 1500 && hourInShanghai < 18) {
+                    status = '缺光照';
+                }
+            }
+            return handleSuccessResponse(c, { dev_id: device.id, status }, '设备健康状态获取成功', 200);
+        } catch (error) {
+            console.error('Error fetching device health:', error);
+            return handleErrorResponse(c, 'Failed to fetch device health', 500, error);
+        }
+    }
     async getUserById(c: Context) {
         try {
             const { id } = c.req.param();
@@ -550,4 +581,3 @@ export class UserController {
 
 
 }
-
