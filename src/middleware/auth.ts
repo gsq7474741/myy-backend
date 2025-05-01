@@ -1,4 +1,5 @@
 // import { Context, Next } from 'hono';
+import { logger } from '../utils/logger';
 // import jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
 import { handleErrorResponse } from '../utils/response';
@@ -34,7 +35,7 @@ export const authMiddleware = async (c: Context, next: Next) => {
   try {
     // 从请求头中获取 token
     const authHeader = c.req.header('Authorization');
-    console.log("authHeader", authHeader);
+    // console.log("authHeader", authHeader);
 
     if (!authHeader) {
       return handleErrorResponse(c, '未提供认证令牌', 401);
@@ -52,7 +53,7 @@ export const authMiddleware = async (c: Context, next: Next) => {
       return handleErrorResponse(c, '令牌不能为空', 401);
     }
 
-    console.log("token", token);
+    // console.log("token", token);
 
     // 验证 token
     const decoded = await verifyToken(token);
@@ -75,11 +76,11 @@ export const authMiddleware = async (c: Context, next: Next) => {
         return handleErrorResponse(c, 'Token已过期，请重新登录', 401);
       }
       // 其他类型的错误
-      console.error('Token验证错误:', error.message);
+      logger.error({ errorMessage: error.message, error }, 'Token验证错误');
       return handleErrorResponse(c, '认证失败，请重新登录', 401);
     } else {
       // 如果 error 不是 Error 类型，记录原始值并返回通用错误
-      console.error('未知错误:', error);
+      logger.error({ error }, 'Token验证未知错误');
       return handleErrorResponse(c, '认证失败，请稍后重试', 500);
     }
 
