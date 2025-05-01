@@ -56,7 +56,7 @@ export class UserController {
                 type: 'string'    // 返回字符串
 
             }).replace(/\s+/g, ''); // 手动去除所有空格;
-            console.log(location);
+            userLogger.info({ location }, '请求天气信息，location参数');
 
 
             // 这里可以添加调用天气API的逻辑
@@ -67,7 +67,7 @@ export class UserController {
 
             const response = await fetch(apiUrl);
             const data = await response.json();
-            console.log(data);
+            userLogger.debug({ data }, '天气API返回数据');
 
             // 处理API返回数据
             // 定义一个接口来明确 data 的类型
@@ -93,7 +93,7 @@ export class UserController {
             }, '天气信息获取成功', 200);
 
         } catch (error) {
-            console.error('获取天气信息出错:', error);
+            userLogger.error({ error }, '获取天气信息出错');
             return handleErrorResponse(c, '获取天气信息失败', 500, error);
         }
     }
@@ -129,7 +129,7 @@ export class UserController {
             // 返回成功响应，包含查询到的订单信息
             return handleSuccessResponse(c, orders, '订单信息查询成功', 200);
         } catch (error) {
-            console.error('查询订单信息时出错:', error);
+            userLogger.error({ error }, '查询订单信息时出错');
             return handleErrorResponse(c, '查询订单信息失败', 500, error);
         }
     }
@@ -166,7 +166,7 @@ export class UserController {
             // 返回成功响应
             return handleSuccessResponse(c, savedOrder, 'Maintenance order created successfully', 200);
         } catch (error) {
-            console.error('Error creating maintenance order:', error);
+            userLogger.error({ error }, '创建养护订单时出错');
             return handleErrorResponse(c, 'Failed to create maintenance order', 500, error);
         }
     }
@@ -176,7 +176,7 @@ export class UserController {
         try {
             // 解析请求体（假设是 JSON 格式）
             const body = await c.req.json();
-            console.log('Request body:', body);
+            userLogger.info({ body }, '上传工单请求体');
 
             // 获取 order_id
             const orderId = body['order_id'];
@@ -219,7 +219,7 @@ export class UserController {
             // 返回成功响应
             return handleSuccessResponse(c, { newOrder: savedOrder }, 'Work order created successfully', 200);
         } catch (error) {
-            console.error('Error uploading work order:', error);
+            userLogger.error({ error }, '上传工单出错');
             return handleErrorResponse(c, 'Failed to upload work order', 500, error);
         }
 
@@ -229,10 +229,10 @@ export class UserController {
     async upload_consultations(c: Context) {
         try {
             const ordersRepository = AppDataSource.getRepository(MaintenanceOrders);
-            console.log('Request headers:', c.req.header());
+            userLogger.info({ headers: c.req.header() }, '上传问诊请求头');
             // 解析请求体，启用 all 选项以支持多个文件
             const body = await c.req.parseBody();
-            console.log(body)
+            userLogger.info({ body }, '上传问诊请求体')
             // 获取 user_id 和 files
             const userId = body['user_id'] as string | null;
             const files = body['images[]'];
@@ -240,9 +240,9 @@ export class UserController {
 
             const devId = body['dev_id'] as string | null;
 
-            console.log(userId)
-            console.log(files);
-            console.log(consultationDescription)
+            userLogger.info({ userId }, '上传问诊用户ID')
+            userLogger.info({ files }, '上传问诊文件列表');
+            userLogger.info({ consultationDescription }, '上传问诊描述')
             // 提取文件字段（支持单文件或多文件）
 
             const fileList = Array.isArray(files) ? files : [files]; // 确保是数组
@@ -308,7 +308,7 @@ export class UserController {
             const savedOrder = await maintenanceOrderRepository.save(newMaintenanceOrder);
             return handleSuccessResponse(c, savedOrder, "上传成功", 200)
         } catch (error) {
-            console.error('上传出错:', error);
+            userLogger.error({ error }, '上传问诊出错');
             return handleErrorResponse(c, "上传失败", 500, error)
         }
     }
@@ -316,7 +316,7 @@ export class UserController {
     async getTaskList(c: Context) {
         const ordersRepository = AppDataSource.getRepository(MaintenanceOrders);
         const { id } = c.req.param();
-        console.log("id:", id);
+        userLogger.info({ id }, '获取任务列表，树木ID');
         // 验证 id 是否有效（例如，是否为数字）
         if (!id || isNaN(parseInt(id, 10))) {
             return handleErrorResponse(c, 'Invalid or missing user_id parameter', 400);
@@ -348,31 +348,31 @@ export class UserController {
         try {
             // 从请求参数中获取 user_id
             const user_id = c.req.query('user_id');
-            console.log(user_id);
+            userLogger.info({ user_id }, '获取用户设备，用户ID');
             if (!user_id || isNaN(parseInt(user_id, 10))) {
                 return handleErrorResponse(c, 'Invalid or missing user_id parameter', 400);
             }
             // dataFluctuationService.updateWithFluctuation();
             // 查找用户设备映射表中的记录
-            console.log("到这儿了吗？");
+            // console.log("到这儿了吗？");
             const parsedUserId = parseInt(user_id, 10);
-            console.log("userID:", parsedUserId)
+            userLogger.info({ parsedUserId }, '解析后用户ID');
             const userDevMappings = await userDevMappingRepository.find({
                 where: { user_id: parsedUserId },
             });
-            console.log("mappings", userDevMappings);
+            userLogger.debug({ userDevMappings }, '用户设备映射');
             // 提取所有的 dev_id
             const devIds = userDevMappings.map(mapping => mapping.dev_id);
-            console.log("devIds", devIds);
+            userLogger.debug({ devIds }, '用户设备ID列表');
             // 根据 dev_id 查询设备表
             const devices = await devRepository.find({
                 where: { id: In(devIds) }, // 使用 In 操作符查找多个 dev_id
             });
-            console.log("devices", devices);
+            userLogger.debug({ devices }, '用户设备列表');
             return handleSuccessResponse(c, devices);
         }
         catch (error) {
-            console.error('Error fetching devices:', error ? (error instanceof Error ? error.stack : JSON.stringify(error, null, 2)) : 'Unknown error');
+            userLogger.error({ error }, '获取设备列表出错');
             return handleErrorResponse(c, 'Failed to fetch devices', 500, error);
         }
     }
@@ -403,10 +403,77 @@ export class UserController {
             }
             return handleSuccessResponse(c, { dev_id: device.id, status }, '设备健康状态获取成功', 200);
         } catch (error) {
-            console.error('Error fetching device health:', error);
+            userLogger.error({ error }, '获取设备健康信息出错');
             return handleErrorResponse(c, 'Failed to fetch device health', 500, error);
         }
     }
+
+async postMyDevWaterSwitch(c: Context) {
+    userLogger.info({ params: c.req.param() }, '[postMyDevWaterSwitch] 请求收到');
+    try {
+        const { id } = c.req.param(); // 用户id
+        userLogger.info({ id }, '[postMyDevWaterSwitch] 用户id');
+        const userRepository = AppDataSource.getRepository(User);
+        const userDevMappingRepository = AppDataSource.getRepository(UserDevMapping);
+        const deviceRepository = AppDataSource.getRepository(Device);
+        const parsedUserId = parseInt(id, 10);
+        if (isNaN(parsedUserId)) {
+            userLogger.warn({ id }, '[postMyDevWaterSwitch] 用户id不是数字');
+            return handleErrorResponse(c, 'Invalid or missing user_id parameter', 400);
+        }
+        // 1. 查用户
+        const user = await userRepository.findOneBy({ id: id });
+        if (!user) {
+            return handleErrorResponse(c, '没找到该用户', 404);
+        }
+        // 2. 读取前端传来的设备ID和开关状态
+        const body = await c.req.json();
+        const { deviceId, switch: switchStatus } = body;
+        userLogger.info({ deviceId, switchStatus }, '[postMyDevWaterSwitch] deviceId与switch参数');
+        const parsedDeviceId = parseInt(deviceId, 10);
+        if (isNaN(parsedDeviceId)) {
+            userLogger.warn({ deviceId }, '[postMyDevWaterSwitch] deviceId不是数字');
+            return handleErrorResponse(c, 'deviceId参数错误', 400);
+        }
+        if (typeof switchStatus !== 'number' || ![0, 1].includes(switchStatus)) {
+            userLogger.warn({ switchStatus }, '[postMyDevWaterSwitch] switch参数错误');
+            return handleErrorResponse(c, 'switch参数错误，只能为0或1', 400);
+        }
+        // 3. 校验设备是否属于该用户
+        const mapping = await userDevMappingRepository.findOneBy({ user_id: parsedUserId, dev_id: parsedDeviceId });
+        userLogger.debug({ mapping }, '[postMyDevWaterSwitch] 设备和用户绑定关系');
+        if (!mapping) {
+            return handleErrorResponse(c, '该设备未绑定到该用户', 403);
+        }
+        // 4. 查设备
+        const device = await deviceRepository.findOneBy({ id: parsedDeviceId });
+        userLogger.debug({ device }, '[postMyDevWaterSwitch] 查到的设备');
+        if (!device) {
+            return handleErrorResponse(c, '设备不存在', 404);
+        }
+        // 5. 调用阿里云物模型下发
+        const { alyIotService } = await import('../services/alyIot');
+        userLogger.info({ deviceName: device?.deviceName, switchStatus }, '[postMyDevWaterSwitch] 即将调用阿里云物模型下发');
+        try {
+            const res = await alyIotService.setDeviceProperty(device.deviceName, { WaterOutletSwitch: switchStatus });
+            userLogger.info({ res }, '[postMyDevWaterSwitch] 阿里云下发返回');
+            // 6. 更新本地数据库设备状态
+            device.WaterOutletSwitch = switchStatus;
+            await deviceRepository.save(device);
+            userLogger.info({ device }, '[postMyDevWaterSwitch] 本地数据库设备状态已更新');
+            return handleSuccessResponse(c, res, '下发成功', 200);
+        } catch (iotErr) {
+            userLogger.error({ iotErr }, '[postMyDevWaterSwitch] 阿里云下发异常');
+
+            return handleErrorResponse(c, '阿里云下发失败', 500, iotErr);
+        }
+    } catch (error) {
+        userLogger.error({ error }, '[postMyDevWaterSwitch] 执行异常');
+        return handleErrorResponse(c, '出错了', 500, error);
+    }
+}
+
+
     async getUserById(c: Context) {
         try {
             const { id } = c.req.param();
@@ -418,7 +485,7 @@ export class UserController {
 
             return handleSuccessResponse(c, user)
         } catch (error) {
-            console.error('Error fetching user:', error); // 添加日志输出
+            userLogger.error({ error }, '获取用户信息出错');
             return handleErrorResponse(c, '出错了', 404, error)
         }
     }
@@ -499,7 +566,7 @@ export class UserController {
 
             if (user_name && password) {
                 // 用户名和密码登录
-                console.log("正在进行用户名和密码登录：", user_name, password);
+                userLogger.info({ user_name }, '用户名密码登录请求');
                 let result = await this.loginByUsernameAndPassword(user_name, password);
 
                 // 生成 JWT token
@@ -513,7 +580,7 @@ export class UserController {
                         // 添加其他你想要包含在 token 中的用户信息
                     }
                 );
-                console.log("token:", token);
+                userLogger.info({ token }, '登录成功，生成token');
 
                 // 返回用户信息和 token
                 return handleSuccessResponse(c, token, "登录成功", 200);
@@ -524,7 +591,7 @@ export class UserController {
                 return handleErrorResponse(c, 'Invalid parameters', 400);
             }
         } catch (error) {
-            console.error('Error during login:', error);
+            userLogger.error({ error }, '登录时发生异常');
             return handleErrorResponse(c, 'Internal Server Error', 500, error);
         }
     }
@@ -532,13 +599,13 @@ export class UserController {
     private async loginByUsernameAndPassword(username: string, password: string) {
         const userRepository = AppDataSource.getRepository(User);
         const user = await userRepository.findOne({ where: { user_name: username } });
-        console.log("user:", user);
+        userLogger.debug({ user }, '登录时查到用户');
         if (!user) {
             throw new Error('User not found');
         }
         let isPasswordValid = false;
         if (password === user.password) {
-            console.log("密码正确");
+            userLogger.info('密码校验通过');
             isPasswordValid = true;
         }
         else {
