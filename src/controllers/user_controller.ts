@@ -388,7 +388,7 @@ export class UserController {
             if (!device) {
                 return handleErrorResponse(c, 'Device not found', 404);
             }
-            let status = '正常';
+            let status = '健康';
             if (device.SoilHumidity > 50) {
                 status = '积水';
             } else if (device.SoilHumidity < 15) {
